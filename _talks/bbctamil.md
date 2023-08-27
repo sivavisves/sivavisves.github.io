@@ -1,7 +1,7 @@
 ---
 title: "BBC Tamil"
-collection: talks
-type: "Conference proceedings talk"
+collection: Interview
+type: "Interview"
 permalink: /talks/bbctamil
 venue: "BBC HQ"
 date: 2018-08-01

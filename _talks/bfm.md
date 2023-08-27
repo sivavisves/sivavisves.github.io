@@ -1,7 +1,7 @@
 ---
 title: "Business FM (BFM 89.9)"
-collection: talks
-type: "Tutorial"
+collection: Interview
+type: "Interview"
 permalink: /talks/bfm
 venue: "BFM 89.9, Kuala Lumpur"
 date: 2021-03-01

@@ -2,7 +2,7 @@
 title: "TEDxIUPUI"
 collection: talks
 type: "Talk"
-permalink: /talks/2014-02-01-talk-2
+permalink: /talks/iupui
 venue: "Indiana University-Purdue University, Indianapolis"
 date: 2019-09
 location: "Indianapolis, Indiana"

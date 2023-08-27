@@ -4,7 +4,7 @@ collection: talks
 type: "Talk"
 permalink: /talks/mck
 venue: "Hilton Hotel, Kuala Lumpur"
-date: 2012-08-01
+date: 2017-08
 location: "Kuala Lumpur, Malaysia"
 ---
 

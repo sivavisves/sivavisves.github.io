@@ -4,7 +4,7 @@ collection: talks
 type: "Talk"
 permalink: /talks/iupui
 venue: "Indiana University-Purdue University, Indianapolis"
-date: 2019-09
+date: 2019-09-28
 location: "Indianapolis, Indiana"
 ---
 

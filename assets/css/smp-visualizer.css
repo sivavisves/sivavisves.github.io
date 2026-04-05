@@ -35,7 +35,7 @@
 .smp-input-group label {
     font-weight: 600;
     font-size: 0.95rem;
-    color: #000;
+    color: #000 !important;
 }
 
 .smp-input-group input[type="date"] {
@@ -45,8 +45,8 @@
     font-size: 1rem;
     font-family: inherit;
     outline: none;
-    color: #000;
-    background-color: #fff;
+    color: #000 !important;
+    background-color: #fff !important;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 

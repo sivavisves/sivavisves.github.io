@@ -1,19 +1,16 @@
 ---
-title: "Malaysia System Marginal Price (SMP) Visualizer"
+title: "Malaysia System Marginal Price (SMP) Downloader"
 layout: single
 permalink: /smp_data/
 author_profile: true
 ---
 
-<!-- Import external charting library -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<!-- Custom CSS for the SMP visualizer -->
+<!-- Custom CSS for the SMP downloader -->
 <link rel="stylesheet" href="{{ base_path }}/assets/css/smp-visualizer.css">
 
 <div class="smp-container">
     <p class="smp-description">
-        Select a start and end date to dynamically fetch and visualize the historical System Marginal Price (SMP) data for Malaysia. You can also export the retrieved data locally to a CSV file.
+        Select a start and end date to dynamically fetch and download the historical System Marginal Price (SMP) data for Malaysia as a CSV file.
     </p>
     
     <div class="smp-controls">
@@ -27,8 +24,7 @@ author_profile: true
             <input type="date" id="endDate" name="endDate" value="2023-01-04">
         </div>
         
-        <button id="fetchBtn" class="smp-btn smp-btn-primary">Fetch & Visualize Data</button>
-        <button id="downloadBtn" class="smp-btn smp-btn-secondary" style="display: none;">Download CSV</button>
+        <button id="downloadBtn" class="smp-btn smp-btn-primary">Download Data (CSV)</button>
     </div>
 
     <div id="loading" class="smp-loading" style="display: none;">
@@ -37,10 +33,6 @@ author_profile: true
     </div>
 
     <div id="errorBox" class="smp-error" style="display: none;"></div>
-
-    <div class="smp-chart-container">
-        <canvas id="smpChart"></canvas>
-    </div>
 </div>
 
 <!-- Custom JS logic -->

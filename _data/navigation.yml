@@ -15,4 +15,7 @@ main:
   - title: "CV"
     url: /cv/
     
+  - title: "SMP Data"
+    url: /smp_data/
+    
 

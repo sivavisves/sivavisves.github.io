@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Safety check just in case the JS is loaded on pages without the visualizer.
     if (!fetchBtn || !startDateInput || !endDateInput) return;
 
+    // Restrict date inputs to the current date to prevent future selection
+    // Convert to target timezone if needed, or simply use local calendar date
+    const today = new Date().toLocaleDateString('en-CA'); // 'en-CA' outputs YYYY-MM-DD
+    startDateInput.max = today;
+    endDateInput.max = today;
+
     let chartInstance = null;
     let currentCsvData = null;
 
@@ -32,34 +38,53 @@ document.addEventListener('DOMContentLoaded', () => {
             showError('Start Date must be before or equal to End Date.');
             return;
         }
+        if (startDate > today || endDate > today) {
+            showError('Start Date and End Date cannot be in the future.');
+            return;
+        }
 
         hideError();
         downloadBtn.style.display = 'none';
         loadingEl.style.display = 'flex';
         currentCsvData = null;
 
-        // Construct the target URL and wrap it in the allOrigins CORS proxy
+        // Construct the target URL
         // This is necessary because the official Sitefinity API rejects browser OPTIONS/CORS requests.
         const targetUrl = `https://pro.sbdpf.cloud.sitefinity.com/api/v1/smp/actual-forecast?startDate=${startDate}&endDate=${endDate}`;
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+        
+        // List of CORS proxies to try sequentially to improve reliability
+        const proxies = [
+            `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`,
+            `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+            `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
+        ];
 
         try {
-            // Note: The CORS proxy automatically proxies our User-Agent or injects its own.
-            const response = await fetch(proxyUrl);
-            
-            if (!response.ok) {
-                // allOrigins returns HTTP error statuses accurately
-                throw new Error(`API returned status: ${response.status}`);
+            let response = null;
+            let success = false;
+            let responseText = "";
+
+            for (const proxyUrl of proxies) {
+                try {
+                    response = await fetch(proxyUrl);
+                    if (response.ok) {
+                        responseText = await response.text();
+                        // Verify that we actually received valid JSON and not a proxy html error page
+                        JSON.parse(responseText); 
+                        success = true;
+                        break;
+                    }
+                } catch (e) {
+                    // Ignore error and try the next proxy
+                    console.warn(`Proxy ${proxyUrl} failed.`);
+                }
+            }
+
+            if (!success) {
+                throw new Error("API returned an error or all CORS proxies failed.");
             }
             
-            const responseText = await response.text();
-            
-            let data;
-            try {
-                data = JSON.parse(responseText);
-            } catch (e) {
-                throw new Error("Received malformed JSON from API. Refer to console.");
-            }
+            let data = JSON.parse(responseText);
             
             if (!data || !data.data || !data.data.actual) {
                 throw new Error('Data format returned from API is unexpected.');

@@ -113,6 +113,16 @@
     font-weight: 500;
 }
 
+.smp-success {
+    padding: 12px 16px;
+    background-color: #d1fae5;
+    color: #065f46;
+    border-left: 4px solid #10b981;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
 /* Loading Spinner */
 .smp-loading {
     display: flex;

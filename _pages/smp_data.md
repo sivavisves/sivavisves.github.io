@@ -33,6 +33,7 @@ author_profile: true
     </div>
 
     <div id="errorBox" class="smp-error" style="display: none;"></div>
+    <div id="successBox" class="smp-success" style="display: none;"></div>
 </div>
 
 <!-- Custom JS logic -->

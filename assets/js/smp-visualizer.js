@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const endDateInput = document.getElementById('endDate');
     const loadingEl = document.getElementById('loading');
     const errorBox = document.getElementById('errorBox');
+    const successBox = document.getElementById('successBox');
     
     // Safety check just in case the JS is loaded on pages without the downloader.
     if (!downloadBtn || !startDateInput || !endDateInput) return;
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         hideError();
+        hideSuccess();
         downloadBtn.disabled = true;
         downloadBtn.textContent = 'Fetching Data...';
         loadingEl.style.display = 'flex';
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             triggerDownload(actualData, startDate, endDate);
+            showSuccess('Data fully loaded! Download initiated.');
             
         } catch (error) {
             showError(`Error fetching data: ${error.message}`);
@@ -127,11 +130,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showError(msg) {
+        hideSuccess(); // Ensure success is hidden when showing an error
         errorBox.textContent = msg;
         errorBox.style.display = 'block';
     }
     
     function hideError() {
         errorBox.style.display = 'none';
+    }
+
+    function showSuccess(msg) {
+        hideError(); // Ensure error is hidden when showing success
+        successBox.textContent = msg;
+        successBox.style.display = 'block';
+    }
+
+    function hideSuccess() {
+        successBox.style.display = 'none';
     }
 });

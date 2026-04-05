@@ -1,0 +1,77 @@
+/* Dark Theme CSS Overrides */
+body.dark-theme {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-theme .page__inner-wrap,
+body.dark-theme .page__content {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, 
+body.dark-theme h4, body.dark-theme h5, body.dark-theme h6 {
+    color: #ffffff !important;
+}
+
+body.dark-theme .masthead {
+    background-color: #1a1a1a !important;
+    border-bottom: 1px solid #333 !important;
+}
+
+body.dark-theme .masthead__menu-item a {
+    color: #e0e0e0 !important;
+}
+
+body.dark-theme .masthead__menu-item a:hover {
+    color: #ffffff !important;
+}
+
+body.dark-theme a {
+    color: #52adc8 !important;
+}
+
+body.dark-theme .author__name, 
+body.dark-theme .author__bio, 
+body.dark-theme .author__urls-wrapper i {
+    color: #cccccc !important;
+}
+
+body.dark-theme .smp-container {
+    background: #1e1e1e !important;
+    border-color: #333 !important;
+}
+
+body.dark-theme .smp-controls {
+    background: #252525 !important;
+}
+
+body.dark-theme .smp-input-group label {
+    color: #e0e0e0 !important;
+}
+
+body.dark-theme .smp-input-group input[type="date"] {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-color: #555 !important;
+}
+
+/* Base Light Mode fixes (ensuring they work regardless of cache) */
+.smp-input-group label {
+    color: #000000 !important;
+}
+
+.smp-input-group input[type="date"] {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}
+
+#theme-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: 20px;
+    outline: none;
+}

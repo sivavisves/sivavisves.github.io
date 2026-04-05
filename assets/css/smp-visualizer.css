@@ -65,6 +65,8 @@
     transition: transform 0.1s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     line-height: 1.4;
     font-family: inherit;
+    margin: 0;
+    height: 42px; /* Ensure uniform height alongside input boxes */
 }
 
 .smp-btn:active {

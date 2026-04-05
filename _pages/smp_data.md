@@ -16,12 +16,12 @@ author_profile: true
     <div class="smp-controls">
         <div class="smp-input-group">
             <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" name="startDate" value="2023-01-01">
+            <input type="date" id="startDate" name="startDate" value="2026-03-01">
         </div>
         
         <div class="smp-input-group">
             <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" name="endDate" value="2023-01-04">
+            <input type="date" id="endDate" name="endDate">
         </div>
         
         <button id="downloadBtn" class="smp-btn smp-btn-primary">Download Data (CSV)</button>

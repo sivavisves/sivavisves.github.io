@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toLocaleDateString('en-CA'); // 'en-CA' outputs YYYY-MM-DD
     startDateInput.max = today;
     endDateInput.max = today;
+    
+    // Default the 'End Date' to today
+    endDateInput.value = today;
 
     downloadBtn.addEventListener('click', fetchAndDownloadData);
 

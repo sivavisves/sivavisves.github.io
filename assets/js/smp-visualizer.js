@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingEl = document.getElementById('loading');
     const errorBox = document.getElementById('errorBox');
     const successBox = document.getElementById('successBox');
-    
+
     // Safety check just in case the JS is loaded on pages without the downloader.
     if (!downloadBtn || !startDateInput || !endDateInput) return;
 
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const today = new Date().toLocaleDateString('en-CA'); // 'en-CA' outputs YYYY-MM-DD
     startDateInput.max = today;
     endDateInput.max = today;
-    
+
     // Default the 'End Date' to today
     endDateInput.value = today;
 
@@ -49,10 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Construct the target URL
         // This is necessary because the official Sitefinity API rejects browser OPTIONS/CORS requests.
         const targetUrl = `https://pro.sbdpf.cloud.sitefinity.com/api/v1/smp/actual-forecast?startDate=${startDate}&endDate=${endDate}`;
-        
+
         // List of CORS proxies to try sequentially to improve reliability
         const proxies = [
-            `https://api.codetabs.com/v1/proxy?quest=${targetUrl}`,
+            `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
             `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
             `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
         ];
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (response.ok) {
                         responseText = await response.text();
                         // Verify that we actually received valid JSON and not a proxy html error page
-                        JSON.parse(responseText); 
+                        JSON.parse(responseText);
                         success = true;
                         break;
                     }
@@ -80,21 +80,37 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!success) {
                 throw new Error("API returned an error or all CORS proxies failed.");
             }
-            
+
             let data = JSON.parse(responseText);
-            
-            if (!data || !data.meta || !data.meta.data || !data.meta.data.actual) {
+
+            if (!data || !data.meta || !data.meta.data) {
                 throw new Error('Data format returned from API is unexpected.');
             }
 
-            const actualData = data.meta.data.actual;
-            if (actualData.length === 0) {
+            const actualData = data.meta.data.actual || [];
+            const forecastData = data.meta.data.forecast || [];
+            
+            const dataMap = new Map();
+            forecastData.forEach(item => dataMap.set(item.t, item));
+            actualData.forEach(item => dataMap.set(item.t, item)); // Overwrites forecast with actual when available
+            
+            // Strictly enforce boundary cutoffs in case proxies ignore the API endDate parameter
+            const startBoundary = new Date(startDate + "T00:00:00").getTime();
+            const endBoundary = new Date(endDate + "T23:59:59").getTime();
+
+            let combinedData = Array.from(dataMap.values()).filter(item => {
+                const itemTime = new Date(item.t).getTime();
+                return itemTime >= startBoundary && itemTime <= endBoundary;
+            });
+            combinedData.sort((a, b) => a.t.localeCompare(b.t)); // Ensure chronological order
+
+            if (combinedData.length === 0) {
                 throw new Error('No data available for the selected dates.');
             }
 
-            triggerDownload(actualData, startDate, endDate);
+            triggerDownload(combinedData, startDate, endDate);
             showSuccess('Data fully loaded! Download initiated.');
-            
+
         } catch (error) {
             showError(`Error fetching data: ${error.message}`);
             console.error(error);
@@ -118,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const csvContent = csvRows.map(e => e.join(",")).join("\n");
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const filename = `smp_data_${startDate}_to_${endDate}.csv`;
-        
+
         const link = document.createElement("a");
         if (link.download !== undefined) {
             const url = URL.createObjectURL(blob);
@@ -137,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         errorBox.textContent = msg;
         errorBox.style.display = 'block';
     }
-    
+
     function hideError() {
         errorBox.style.display = 'none';
     }
